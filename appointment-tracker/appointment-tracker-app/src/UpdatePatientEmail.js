@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './FormStyles.css'; // Import custom CSS for styling
 
 const UpdatePatientEmail = () => {
   const navigate = useNavigate();
@@ -22,16 +23,19 @@ const UpdatePatientEmail = () => {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Update Patient</h2>
-      <form onSubmit={handleSearch}>
-        <label>
-          Enter Patient Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </label>
-        <button type="submit">Search</button>
+      <form className="patient-form" onSubmit={handleSearch}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter Patient Email"
+          required
+        />
+        <button className="submit-button" type="submit">Search</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './FormStyles.css'; // Import custom CSS for styling
 
 const AddPatient = () => {
   const [name, setName] = useState('');
@@ -10,6 +11,16 @@ const AddPatient = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      // Check if the email already exists
+      const existingPatientResponse = await fetch(`http://localhost:8080/api/patient/email/${email}`);
+      if (existingPatientResponse.ok) {
+        const existingPatient = await existingPatientResponse.json();
+        if (existingPatient) {
+          setMessage('Email address is already used.');
+          return;
+        }
+      }
+      // If email doesn't exist, proceed to add the patient
       const response = await fetch('http://localhost:8080/api/patient', {
         method: 'POST',
         headers: {
@@ -31,9 +42,9 @@ const AddPatient = () => {
   };
 
   return (
-    <div>
-      <h2>Please add the details of Patients:</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="form-container">
+      <h2>Add Patient</h2>
+      <form className="patient-form" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -48,12 +59,14 @@ const AddPatient = () => {
           onChange={e => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Add Patient</button>
+        <button className="submit-button" type="submit">Add Patient</button>
       </form>
       {message && (
-        <div>
-          <p>{message}</p>
-          <button onClick={() => navigate('/')}>Go to Home</button>
+        <div className="message-container">
+          <p className={`message ${message.includes('Error') ? 'error-message' : ''}`}>
+            {message}
+          </p>
+          <button className="home-button" onClick={() => navigate('/')}>Go to Home</button>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './FormStyles.css'; // Import custom CSS for styling
 
 const DeletePatient = () => {
   const [email, setEmail] = useState('');
@@ -25,9 +26,9 @@ const DeletePatient = () => {
   };
 
   return (
-    <div>
-      <h2>Please enter the email of the patient to delete:</h2>
-      <form onSubmit={handleDelete}>
+    <div className="form-container">
+      <h2>Delete Patient</h2>
+      <form className="patient-form" onSubmit={handleDelete}>
         <input
           type="email"
           placeholder="Email"
@@ -35,12 +36,14 @@ const DeletePatient = () => {
           onChange={e => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Delete Patient</button>
+        <button className="submit-button" type="submit">Delete Patient</button>
       </form>
       {message && (
-        <div>
-          <p>{message}</p>
-          <button onClick={() => navigate('/')}>Go to Home</button>
+        <div className="message-container">
+          <p className={`message ${message.includes('Error') ? 'error-message' : ''}`}>
+            {message}
+          </p>
+          <button className="home-button" onClick={() => navigate('/')}>Go to Home</button>
         </div>
       )}
     </div>

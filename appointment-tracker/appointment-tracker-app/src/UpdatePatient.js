@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import './FormStyles.css'; // Import custom CSS for styling
 
 const UpdatePatient = () => {
   const { email } = useParams();
@@ -31,7 +32,6 @@ const UpdatePatient = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      // Use moment to correctly format the date in local time zone and add one day
       const formattedDate = moment(lastAppointmentDate).add(1, 'day').format('YYYY-MM-DD');
 
       const response = await fetch(`http://localhost:8080/api/patient/email/${email}`, {
@@ -53,13 +53,13 @@ const UpdatePatient = () => {
   };
 
   if (!patient) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Update Patient</h2>
-      <form onSubmit={handleUpdate}>
+      <form className="patient-form" onSubmit={handleUpdate}>
         <label>
           Name:
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -73,7 +73,7 @@ const UpdatePatient = () => {
             required
           />
         </label>
-        <button type="submit">Update</button>
+        <button className="submit-button" type="submit">Update</button>
       </form>
     </div>
   );
