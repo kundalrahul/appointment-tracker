@@ -5,6 +5,7 @@ import AddPatient from './AddPatient';
 import DeletePatient from './DeletePatient';
 import UpdatePatient from './UpdatePatient';
 import UpdatePatientEmail from './UpdatePatientEmail';
+import CheckAppointments from './CheckAppointments';
 
 const App = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const App = () => {
             <Link className="nav-link" to="/add">Add Patient</Link>
             <Link className="nav-link" to="/delete">Delete Patient</Link>
             <Link className="nav-link" to="/update-email">Update Patient</Link>
+            <Link className="nav-link" to="/check-appointments">Check Appointments</Link>
           </nav>
         </header>
       )}
@@ -27,6 +29,7 @@ const App = () => {
         <Route path="/delete" element={<DeletePatient />} />
         <Route path="/update-email" element={<UpdatePatientEmail />} />
         <Route path="/update/:email" element={<UpdatePatient />} />
+        <Route path="/check-appointments" element={<CheckAppointments />} />
         <Route path="/" element={<div><h2>Welcome to the Appointment Tracker</h2></div>} />
       </Routes>
     </div>

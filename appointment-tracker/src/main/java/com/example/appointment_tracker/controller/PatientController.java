@@ -3,11 +3,14 @@ package com.example.appointment_tracker.controller;
 import com.example.appointment_tracker.domain.Patient;
 import com.example.appointment_tracker.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -17,24 +20,10 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-/*    @GetMapping
-    public List<Patient> getAllPatients() {
-        return patientService.getAllPatients();
-    }*/
-
     @PostMapping
     public Patient createPatient(@RequestBody Patient patient) {
         return patientService.createPatient(patient);
     }
-
-/*
-    @PutMapping("/{id}/appointments")
-    public ResponseEntity<Patient> updateLastAppointmentDate(@PathVariable Long id, @RequestBody Patient patient) {
-        // Validation and update logic
-        Patient updatedPatient = patientService.saveOrUpdatePatient(patient);
-        return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
-    }
-*/
 
     @DeleteMapping("/email/{email}")
     public void deletePatientByEmail(@PathVariable String email) {
@@ -50,6 +39,7 @@ public class PatientController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving patient details");
         }
     }
+
     @PutMapping("/email/{email}")
     public ResponseEntity<?> updatePatientDetails(@PathVariable String email, @RequestBody Patient updatedPatient) {
         try {
@@ -57,6 +47,26 @@ public class PatientController {
             return ResponseEntity.ok(updated);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating patient details");
+        }
+    }
+
+    @GetMapping("/check-appointments")
+    public ResponseEntity<ByteArrayResource> checkAppointments() {
+        try {
+            ByteArrayResource resource = patientService.checkAppointments();
+
+            if (resource == null) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=overdue_appointments.xlsx") // or .docx
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 
