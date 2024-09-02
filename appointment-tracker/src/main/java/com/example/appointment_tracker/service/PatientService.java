@@ -26,10 +26,6 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-/*    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
-    }*/
-
     public Patient createPatient(Patient patient) {
         return patientRepository.save(patient);
     }
