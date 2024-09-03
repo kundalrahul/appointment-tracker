@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FormStyles.css'; // Import custom CSS for styling
+import config from './config';
 
 const UpdatePatientEmail = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const UpdatePatientEmail = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8080/api/patient/email/${email}`);
+      const response = await fetch(`${config.apiUrl}/api/patient/email/${email}`);
       if (response.ok) {
         navigate(`/update/${email}`);
       } else {

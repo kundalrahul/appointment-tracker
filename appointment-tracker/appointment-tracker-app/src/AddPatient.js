@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FormStyles.css'; // Import custom CSS for styling
+import config from './config';
 
 const AddPatient = () => {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const AddPatient = () => {
     e.preventDefault();
     try {
       // Check if the email already exists
-      const existingPatientResponse = await fetch(`http://localhost:8080/api/patient/email/${email}`);
+      const existingPatientResponse = await fetch(`${config.apiUrl}/api/patient/email/${email}`);
       if (existingPatientResponse.ok) {
         const existingPatient = await existingPatientResponse.json();
         if (existingPatient) {
@@ -21,7 +22,7 @@ const AddPatient = () => {
         }
       }
       // If email doesn't exist, proceed to add the patient
-      const response = await fetch('http://localhost:8080/api/patient', {
+      const response = await fetch(`${config.apiUrl}/api/patient`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FormStyles.css'; // Import custom CSS for styling
+import config from './config';
 
 const CheckAppointments = () => {
   const [message, setMessage] = useState('');
@@ -8,7 +9,7 @@ const CheckAppointments = () => {
 
   const handleCheckAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/patient/check-appointments', {
+      const response = await fetch(`${config.apiUrl}/api/patient/check-appointments`, {
         method: 'GET',
       });
 

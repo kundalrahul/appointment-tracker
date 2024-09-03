@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import './FormStyles.css'; // Import custom CSS for styling
+import config from './config';
 
 const UpdatePatient = () => {
   const { email } = useParams();
@@ -13,7 +14,7 @@ const UpdatePatient = () => {
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/patient/email/${email}`);
+        const response = await fetch(`${config.apiUrl}/api/patient/email/${email}`);
         if (response.ok) {
           const data = await response.json();
           setPatient(data);
@@ -34,7 +35,7 @@ const UpdatePatient = () => {
     try {
       const formattedDate = moment(lastAppointmentDate).add(1, 'day').format('YYYY-MM-DD');
 
-      const response = await fetch(`http://localhost:8080/api/patient/email/${email}`, {
+      const response = await fetch(`${config.apiUrl}/api/patient/email/${email}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
